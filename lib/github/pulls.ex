@@ -35,4 +35,27 @@ defmodule Github.Pulls do
       [{"Authorization", "token #{github_client.access_token}"}]
     )
   end
+
+  @doc """
+  Pull Request
+
+  ## Example
+
+      iex> client = %Github.Client{access_token: "access_token"}
+
+      iex> client |> Github.Pulls.find!("WorkflowCI/github", 18273)
+      %Github.Client.Response{
+        body: [%{"name" => "WorkflowCI", ...}],
+        status: 200,
+        ...
+      }
+  """
+  def find!(github_client, id, options) do
+    opts = Enum.into(options, @list_default_options)
+
+    get!(
+      "https://api.github.com/repos/#{opts.repo_path}/pulls/#{id}",
+      [{"Authorization", "token #{github_client.access_token}"}]
+    )
+  end
 end
